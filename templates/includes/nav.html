@@ -157,6 +157,11 @@
                                 </div>
                             </div>
                         </div>
+                <!-- Search form -->
+                <form action="{% url 'docs:search' %}" method="get" class="hidden lg:flex items-center bg-slate-900/40 border border-slate-800 rounded-lg overflow-hidden">
+                    <input name="q" type="search" placeholder="Buscar títulos..." value="{{ request.GET.q|default:'' }}" class="px-3 py-2 bg-transparent text-sm text-slate-200 focus:outline-none w-44" />
+                    <button type="submit" class="px-3 py-2 bg-blue-600 text-white text-sm hover:bg-blue-500">Buscar</button>
+                </form>
                 {% if user.is_authenticated %}
                     <a href="/admin/" class="text-sm bg-slate-800 px-4 py-2 rounded-lg hover:bg-slate-700 transition">Panel Admin</a>
                 {% else %}
@@ -164,8 +169,11 @@
                 {% endif %}
             </div>
 
-            <!-- Mobile: hamburger -->
-            <div class="md:hidden flex items-center">
+            <!-- Mobile: hamburger + search -->
+            <div class="md:hidden flex items-center gap-2">
+                <button id="mobile-search-toggle" aria-expanded="false" aria-controls="mobile-search" class="p-2 rounded-md text-slate-200 hover:bg-slate-800/50 focus:outline-none">
+                    <i class="fas fa-search"></i>
+                </button>
                 <button id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" class="p-2 rounded-md text-slate-200 hover:bg-slate-800/50 focus:outline-none">
                     <svg id="nav-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     <svg id="nav-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -193,6 +201,13 @@
         .mega-panel{ opacity:0; transform:translateY(8px) scale(.985); pointer-events:none; transition:opacity .18s cubic-bezier(.2,.9,.3,1), transform .22s cubic-bezier(.2,.9,.3,1); }
         .mega-panel.mega-show{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
         @media (prefers-reduced-motion: reduce){ .mega-panel, .mega-panel.mega-show{ transition:none !important; } }
+
+        /* Estilos para buscador chido */
+        .search-shell { display:inline-flex; align-items:center; gap:0.25rem; }
+        .search-box { transition: width .22s cubic-bezier(.2,.9,.3,1); width:10rem; }
+        .search-box:focus { width:18rem; }
+        .search-icon { color: #94a3b8; }
+        @media (max-width: 1024px){ .search-box { width:9rem; } .search-box:focus { width:12rem; } }
     </style>
     <script>
         (function(){
@@ -263,5 +278,38 @@
                 megaRes.addEventListener('mouseleave', ()=> { timer2 = setTimeout(()=> animateHide(megaRes), 160); } );
             }
         })();
+
+        // Search UI: expand, clear and mobile overlay
+        (function(){
+            const input = document.querySelector('.site-search-input');
+            const clearBtn = document.getElementById('search-clear-btn');
+            const form = document.getElementById('site-search-form');
+            if (input && clearBtn){
+                input.addEventListener('input', ()=> {
+                    clearBtn.classList.toggle('hidden', !input.value);
+                });
+                clearBtn.addEventListener('click', (e)=>{ e.preventDefault(); input.value=''; input.focus(); clearBtn.classList.add('hidden'); });
+            }
+
+            const mobileToggle = document.getElementById('mobile-search-toggle');
+            const mobileOverlay = document.getElementById('mobile-search-overlay');
+            if (mobileToggle && mobileOverlay){
+                mobileToggle.addEventListener('click', ()=>{ mobileOverlay.classList.toggle('hidden'); mobileOverlay.querySelector('input')?.focus(); });
+                mobileOverlay.querySelector('.close-search')?.addEventListener('click', ()=> mobileOverlay.classList.add('hidden'));
+            }
+        })();
     </script>
 </nav>
+
+<!-- Mobile search overlay -->
+<div id="mobile-search-overlay" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start pt-28 px-6">
+    <div class="w-full max-w-xl mx-auto bg-[#071022]/95 rounded-lg p-4">
+        <div class="flex items-center gap-2">
+            <form id="site-search-form-mobile" action="{% url 'docs:search' %}" method="get" class="w-full flex items-center gap-2">
+                <input name="q" type="search" placeholder="Buscar títulos..." value="{{ request.GET.q|default:'' }}" class="w-full px-3 py-2 rounded bg-transparent border border-slate-800 text-slate-200 focus:outline-none site-search-input" />
+                <button type="submit" class="px-3 py-2 bg-blue-600 rounded text-white">Buscar</button>
+            </form>
+            <button class="close-search text-slate-400 hover:text-white px-2">Cerrar</button>
+        </div>
+    </div>
+</div>

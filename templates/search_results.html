@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Buscar | CloudFree{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-8">
+        <h1 class="text-3xl text-white font-bold">Resultados de búsqueda</h1>
+        <p class="text-slate-400 mt-2">Búsqueda: <strong class="text-slate-200">{{ q }}</strong></p>
+    </header>
+
+    {% if not q %}
+        <div class="text-slate-400">Ingresa un término de búsqueda en el campo superior.</div>
+    {% else %}
+        <div class="space-y-8">
+            <section>
+                <h2 class="text-xl text-white font-semibold mb-4">Manuales ({{ manuals.count }})</h2>
+                {% if manuals %}
+                    <ul class="space-y-3">
+                        {% for m in manuals %}
+                        <li>
+                            <a href="{% url 'docs:manual_detail' m.slug %}" class="text-slate-200 hover:text-blue-400">{{ m.title }}</a>
+                            <div class="text-slate-500 text-sm">{{ m.updated_at|date:"d M Y" }}</div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-slate-500">No se encontraron manuales.</p>
+                {% endif %}
+            </section>
+
+            <section>
+                <h2 class="text-xl text-white font-semibold mb-4">Recursos ({{ resources.count }})</h2>
+                {% if resources %}
+                    <ul class="space-y-3">
+                        {% for r in resources %}
+                        <li>
+                            <a href="{% url 'resources:resource_detail' r.slug %}" class="text-slate-200 hover:text-blue-400">{{ r.name }}</a>
+                            <div class="text-slate-500 text-sm">{% if r.version %}v{{ r.version }}{% endif %}</div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-slate-500">No se encontraron recursos.</p>
+                {% endif %}
+            </section>
+
+            <section>
+                <h2 class="text-xl text-white font-semibold mb-4">Noticias ({{ news_items.count }})</h2>
+                {% if news_items %}
+                    <ul class="space-y-3">
+                        {% for n in news_items %}
+                        <li>
+                            <a href="{% url 'news:news_detail' n.slug %}" class="text-slate-200 hover:text-blue-400">{{ n.title }}</a>
+                            <div class="text-slate-500 text-sm">{{ n.created_at|date:"d M Y" }}</div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-slate-500">No se encontraron noticias.</p>
+                {% endif %}
+            </section>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

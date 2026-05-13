@@ -46,3 +46,23 @@ def all_manuals(request):
     return render(request, 'docs/all_manuals.html', {
         'categories': categories,
     })
+
+
+def search(request):
+    q = request.GET.get('q', '').strip()
+    manuals = Manual.objects.none()
+    resources = Resource.objects.none()
+    news_items = News.objects.none()
+
+    if q:
+        manuals = Manual.objects.filter(title__icontains=q)
+        resources = Resource.objects.filter(name__icontains=q)
+        news_items = News.objects.filter(title__icontains=q, published=True)
+
+    context = {
+        'q': q,
+        'manuals': manuals,
+        'resources': resources,
+        'news_items': news_items,
+    }
+    return render(request, 'search_results.html', context)
