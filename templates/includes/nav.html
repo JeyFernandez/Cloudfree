@@ -11,8 +11,152 @@
 
             <!-- Desktop links -->
             <div class="hidden md:flex items-center gap-6">
-                <a href="/" class="text-sm font-medium hover:text-blue-400 transition-colors">Inicio</a>
-                <a href="/manuales/" class="text-sm font-medium hover:text-blue-400 transition-colors">Documentación</a>
+                        <a href="/" class="text-sm font-medium hover:text-blue-400 transition-colors">Inicio</a>
+                        <div class="relative has-mega">
+                            <a href="/manuales/" id="nav-docs" class="text-sm font-medium hover:text-blue-400 transition-colors">Documentación</a>
+                            <!-- Mega panel for Documentation -->
+                            <div id="mega-docs" class="hidden absolute right-0 mt-3 w-[840px] bg-gradient-to-br from-[#041024]/90 to-[#031426]/80 backdrop-blur-lg border border-blue-800/30 rounded-2xl shadow-[0_30px_80px_rgba(3,12,36,0.6)] p-6 z-50 mega-panel" aria-hidden="true">
+                                <div class="grid grid-cols-3 gap-6 text-sm">
+                                    <div>
+                                        <h4 class="text-slate-200 font-semibold mb-3">Explorar</h4>
+                                        <ul class="space-y-3 text-slate-400">
+                                            <li>
+                                                <a href="/manuales/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-book text-blue-300"></i>
+                                                    </div>
+                                                    <span>Ver todos los manuales</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/manuales/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-th-list text-blue-300"></i>
+                                                    </div>
+                                                    <span>Categorías</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/noticias/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-newspaper text-blue-300"></i>
+                                                    </div>
+                                                    <span>Últimas noticias</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-slate-200 font-semibold mb-3">Rápido</h4>
+                                        <ul class="space-y-3 text-slate-400">
+                                            <li>
+                                                <a href="/manuales/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-rocket text-blue-300"></i>
+                                                    </div>
+                                                    <span>Instalación</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/manuales/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-book-open text-blue-300"></i>
+                                                    </div>
+                                                    <span>Guía de inicio</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/manuales/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-code text-blue-300"></i>
+                                                    </div>
+                                                    <span>Referencias</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-slate-200 font-semibold mb-3">Preview</h4>
+                                        <p class="text-slate-400 text-xs mb-4">Accede a los manuales más recientes y a guías rápidas sin salir de la página.</p>
+                                        <div class="grid grid-cols-1 gap-3">
+                                            <a href="#" class="flex items-center gap-3 p-2 rounded-md hover:bg-[#021426]/40 transition">
+                                                <img src="/static/img/manual-thumb.png" alt="thumb" class="w-14 h-10 object-cover rounded" />
+                                                <div class="text-sm">
+                                                    <div class="text-slate-200 font-medium">Instalación rápida</div>
+                                                    <div class="text-slate-400 text-xs">Guía de 5 minutos</div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="flex items-center gap-3 p-2 rounded-md hover:bg-[#021426]/40 transition">
+                                                <img src="/static/img/manual-thumb2.png" alt="thumb" class="w-14 h-10 object-cover rounded" />
+                                                <div class="text-sm">
+                                                    <div class="text-slate-200 font-medium">Referencias API</div>
+                                                    <div class="text-slate-400 text-xs">Snippets y ejemplos</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="/noticias/" class="text-sm font-medium hover:text-blue-400 transition-colors">Noticias</a>
+                        <div class="relative has-mega">
+                            <a href="/recursos/" id="nav-res" class="text-sm font-medium hover:text-blue-400 transition-colors">Recursos</a>
+                            <!-- Mega panel for Resources -->
+                            <div id="mega-res" class="hidden absolute right-0 mt-3 w-[720px] bg-gradient-to-br from-[#041024]/90 to-[#031426]/80 backdrop-blur-lg border border-blue-800/30 rounded-2xl shadow-[0_30px_80px_rgba(3,12,36,0.6)] p-6 z-50 mega-panel" aria-hidden="true">
+                                <div class="grid grid-cols-2 gap-6 text-sm">
+                                    <div>
+                                        <h4 class="text-slate-200 font-semibold mb-3">Recursos Nuevos</h4>
+                                        <ul class="space-y-3 text-slate-400">
+                                            <li>
+                                                <a href="/recursos/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-download text-blue-300"></i>
+                                                    </div>
+                                                    <span>Ver todos los recursos</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/recursos/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-wrench text-blue-300"></i>
+                                                    </div>
+                                                    <span>Herramientas</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/recursos/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-layer-group text-blue-300"></i>
+                                                    </div>
+                                                    <span>Librerías</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-slate-200 font-semibold mb-3">Atajos</h4>
+                                        <ul class="space-y-3 text-slate-400">
+                                            <li>
+                                                <a href="/recursos/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-star text-blue-300"></i>
+                                                    </div>
+                                                    <span>Top descargados</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/recursos/" class="flex items-center gap-3 hover:text-white">
+                                                    <div class="w-9 h-9 rounded-md flex items-center justify-center bg-[#021426]/60 border border-blue-900/30">
+                                                        <i class="fas fa-tags text-blue-300"></i>
+                                                    </div>
+                                                    <span>Categorías</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 {% if user.is_authenticated %}
                     <a href="/admin/" class="text-sm bg-slate-800 px-4 py-2 rounded-lg hover:bg-slate-700 transition">Panel Admin</a>
                 {% else %}
@@ -35,6 +179,8 @@
         <div class="px-4 pt-4 pb-6 space-y-2">
             <a href="/" class="block text-slate-200 px-3 py-2 rounded hover:bg-slate-800/40">Inicio</a>
             <a href="/manuales/" class="block text-slate-200 px-3 py-2 rounded hover:bg-slate-800/40">Documentación</a>
+            <a href="/noticias/" class="block text-slate-200 px-3 py-2 rounded hover:bg-slate-800/40">Noticias</a>
+            <a href="/recursos/" class="block text-slate-200 px-3 py-2 rounded hover:bg-slate-800/40">Recursos</a>
             {% if user.is_authenticated %}
                 <a href="/admin/" class="block text-slate-200 px-3 py-2 rounded hover:bg-slate-800/40">Panel Admin</a>
             {% else %}
@@ -43,6 +189,11 @@
         </div>
     </div>
 
+    <style>
+        .mega-panel{ opacity:0; transform:translateY(8px) scale(.985); pointer-events:none; transition:opacity .18s cubic-bezier(.2,.9,.3,1), transform .22s cubic-bezier(.2,.9,.3,1); }
+        .mega-panel.mega-show{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+        @media (prefers-reduced-motion: reduce){ .mega-panel, .mega-panel.mega-show{ transition:none !important; } }
+    </style>
     <script>
         (function(){
             const btn = document.getElementById('nav-toggle');
@@ -57,6 +208,60 @@
                 openIcon.classList.toggle('hidden');
                 closeIcon.classList.toggle('hidden');
             });
+        })();
+        // Mega menu interactions (show with animation)
+        (function(){
+            const docsLink = document.getElementById('nav-docs');
+            const resLink = document.getElementById('nav-res');
+            const megaDocs = document.getElementById('mega-docs');
+            const megaRes = document.getElementById('mega-res');
+
+            function animateShow(el){
+                if (!el) return;
+                if (!el.classList.contains('hidden')){
+                    el.classList.add('mega-show');
+                    return;
+                }
+                el.classList.remove('hidden');
+                el.setAttribute('aria-hidden','false');
+                // allow next frame for transition
+                requestAnimationFrame(()=> requestAnimationFrame(()=> el.classList.add('mega-show')));
+            }
+
+            function animateHide(el){
+                if (!el) return;
+                el.classList.remove('mega-show');
+                const onEnd = (e)=>{
+                    el.classList.add('hidden');
+                    el.setAttribute('aria-hidden','true');
+                    el.removeEventListener('transitionend', onEnd);
+                };
+                el.addEventListener('transitionend', onEnd);
+                // fallback: ensure hidden after 260ms
+                setTimeout(()=>{ if (!el.classList.contains('mega-show')){ el.classList.add('hidden'); el.setAttribute('aria-hidden','true'); } }, 300);
+            }
+
+            if (docsLink && megaDocs){
+                let timer;
+                docsLink.parentElement.addEventListener('mouseenter', ()=>{ clearTimeout(timer); animateShow(megaDocs);} );
+                docsLink.parentElement.addEventListener('mouseleave', ()=>{ timer = setTimeout(()=> animateHide(megaDocs), 160); } );
+                // keyboard focus
+                docsLink.addEventListener('focus', ()=> animateShow(megaDocs));
+                docsLink.addEventListener('blur', ()=> animateHide(megaDocs));
+                // allow panel to stay when hovering over panel itself
+                megaDocs.addEventListener('mouseenter', ()=> clearTimeout(timer) );
+                megaDocs.addEventListener('mouseleave', ()=> { timer = setTimeout(()=> animateHide(megaDocs), 160); } );
+            }
+
+            if (resLink && megaRes){
+                let timer2;
+                resLink.parentElement.addEventListener('mouseenter', ()=>{ clearTimeout(timer2); animateShow(megaRes);} );
+                resLink.parentElement.addEventListener('mouseleave', ()=>{ timer2 = setTimeout(()=> animateHide(megaRes), 160); } );
+                resLink.addEventListener('focus', ()=> animateShow(megaRes));
+                resLink.addEventListener('blur', ()=> animateHide(megaRes));
+                megaRes.addEventListener('mouseenter', ()=> clearTimeout(timer2) );
+                megaRes.addEventListener('mouseleave', ()=> { timer2 = setTimeout(()=> animateHide(megaRes), 160); } );
+            }
         })();
     </script>
 </nav>

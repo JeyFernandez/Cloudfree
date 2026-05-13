@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ news.title }} | CloudFree{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-16">
+    <article data-animate style="--anim-delay: 80ms;">
+        <header class="mb-6" data-animate style="--anim-delay: 120ms;">
+            <h1 class="text-4xl font-bold text-white mb-2">{{ news.title }}</h1>
+            <p class="text-slate-500 text-sm">{{ news.created_at|date:"d M Y" }}{% if news.author %} • {{ news.author.get_full_name|default:news.author.username }}{% endif %}</p>
+        </header>
+
+        {% if news.image %}
+        <div class="mb-8 rounded-lg overflow-hidden" data-animate style="--anim-delay: 160ms;">
+            <img src="{{ news.image.url }}" alt="{{ news.title }}" class="w-full h-auto object-cover">
+        </div>
+        {% endif %}
+
+        <div class="prose prose-invert max-w-none text-slate-200" data-animate style="--anim-delay: 200ms;">
+            {{ news.content|linebreaks }}
+        </div>
+    </article>
+</div>
+{% block extra_footer %}
+<div class="max-w-4xl mx-auto px-6 pb-12">
+    <a href="/noticias/" class="text-blue-500 hover:underline">← Volver al feed</a>
+</div>
+{% endblock %}
+{% endblock %}

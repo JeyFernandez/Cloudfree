@@ -1,6 +1,8 @@
 import markdown
 from django.shortcuts import render, get_object_or_404
 from .models import Manual, Category
+from news.models import News
+from resources.models import Resource
 
 def manual_detail(request, slug):
     manual = get_object_or_404(Manual, slug=slug)
@@ -22,17 +24,17 @@ def manual_detail(request, slug):
 def home(request):
     # Obtenemos los 5 manuales más recientes de la base de datos
     manuales_recientes = Manual.objects.all().order_by('-created_at')[:5]
-    
-    # Lista de módulos para la barra lateral derecha
-    modules = [
-        {'name': 'Documentación', 'url': '/manuales/'},
-        {'name': 'Registro', 'url': '/accounts/registro/'},
-        {'name': 'Admin', 'url': '/admin/'},
-    ]
+
+    # 5 noticias más recientes
+    noticias_recientes = News.objects.filter(published=True).order_by('-created_at')[:5]
+
+    # Recursos nuevos para la barra lateral
+    recursos_nuevos = Resource.objects.all().order_by('-created_at')[:4]
 
     context = {
         'manuales_recientes': manuales_recientes,
-        'modules': modules,
+        'noticias_recientes': noticias_recientes,
+        'recursos_nuevos': recursos_nuevos,
         'site_name': 'CloudFree'
     }
     return render(request, 'home.html', context)

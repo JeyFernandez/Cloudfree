@@ -1,26 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Documentación |{{ site_name }}{% endblock %}
+
+{% block title %}Recursos | CloudFree{% endblock %}
 
 {% block content %}
-
 <div class="max-w-7xl mx-auto px-6 py-16">
     <header class="mb-16" data-animate style="--anim-delay: 80ms;">
-        <h1 class="text-4xl font-extrabold text-white mb-4">Biblioteca de Documentación</h1>
+        <h1 class="text-4xl font-extrabold text-white mb-4">Biblioteca de Recursos</h1>
         <p class="text-slate-400 max-w-2xl">
-            Explora nuestra colección completa de guías técnicas, manuales de instalación y recursos para desarrolladores.
+            Descubre herramientas, software y aplicaciones útiles organizadas por categoría.
         </p>
     </header>
 
     <div class="md:flex md:gap-8">
         <!-- Sidebar -->
         <aside class="hidden md:block md:w-64 flex-shrink-0">
-            <div class="sticky top-24 bg-transparent">
+            <div class="sticky top-24">
                 <h3 class="text-sm text-slate-400 uppercase mb-3">Categorías</h3>
                 <nav class="space-y-2">
                     {% for category in categories %}
                     <a href="#category-{{ category.id }}" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800/60 hover:text-white transition-colors">
                         <span class="inline-flex items-center gap-2">
-                            <i class="{{ category.ico|default:'fas fa-folder' }} text-sm text-slate-400"></i>
+                            <i class="{{ category.ico|default:'fas fa-box' }} text-sm text-slate-400"></i>
                             <span>{{ category.name }}</span>
                         </span>
                     </a>
@@ -37,34 +37,41 @@
                     <!-- Encabezado de Categoría -->
                     <div class="flex items-center gap-4 mb-8">
                         <div class="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center text-blue-400">
-                            <i class="{{ category.ico|default:'fas fa-folder' }} text-lg"></i>
+                            <i class="{{ category.ico|default:'fas fa-box' }} text-lg"></i>
                         </div>
                         <h2 class="text-2xl font-bold text-white" data-animate style="--anim-delay: 140ms;">{{ category.name }}</h2>
                         <div class="h-px flex-1 bg-slate-800 ml-4"></div>
                     </div>
 
-                    <!-- Grid de Manuales -->
+                    <!-- Grid de Recursos -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {% for manual in category.manual_set.all %}
-                        <a href="{% url 'docs:manual_detail' manual.slug %}" class="group bg-slate-900/40 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/50 transition-all duration-300" data-animate style="--anim-delay: {{ forloop.counter0|add:1 }}00ms;">
+                        {% for resource in category.resources.all %}
+                        <a href="{% url 'resources:resource_detail' resource.slug %}" class="group bg-slate-900/40 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/50 transition-all duration-300" data-animate style="--anim-delay: {{ forloop.counter0|add:1 }}00ms;">
+                            {% if resource.image %}
+                            <div class="mb-4 rounded-lg overflow-hidden aspect-video bg-slate-800">
+                                <img src="{{ resource.image.url }}" alt="{{ resource.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            </div>
+                            {% endif %}
                             <h3 class="text-white font-bold mb-2 group-hover:text-blue-400 transition-colors">
-                                {{ manual.title }}
+                                {{ resource.name }}
                             </h3>
                             <p class="text-sm text-slate-500 mb-4 line-clamp-2">
-                                {{ manual.content|truncatewords:15 }}
+                                {{ resource.short_description }}
                             </p>
                             <div class="flex items-center justify-between text-xs font-mono">
-                                <span class="text-slate-600 uppercase">{{ manual.updated_at|date:"d M Y" }}</span>
-                                <span class="text-blue-500 group-hover:translate-x-1 transition-transform">Leer más →</span>
+                                <span class="text-slate-600">{% if resource.version %}v{{ resource.version }}{% else %}—{% endif %}</span>
+                                <span class="text-blue-500 group-hover:translate-x-1 transition-transform">Explorar →</span>
                             </div>
                         </a>
+                        {% empty %}
+                        <p class="text-slate-500 italic col-span-full">No hay recursos en esta categoría.</p>
                         {% endfor %}
                     </div>
                 </section>
                 {% empty %}
                 <div class="text-center py-20 bg-slate-900/20 rounded-3xl border border-dashed border-slate-800">
                     <i class="fas fa-ghost text-4xl text-slate-700 mb-4"></i>
-                    <p class="text-slate-500">Aún no hay manuales cargados en la biblioteca.</p>
+                    <p class="text-slate-500">Aún no hay recursos cargados.</p>
                 </div>
                 {% endfor %}
             </div>
@@ -72,5 +79,3 @@
     </div>
 </div>
 {% endblock %}
-
-
