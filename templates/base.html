@@ -1,0 +1,179 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}CloudFree{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --ease-smooth: cubic-bezier(.22, 1, .36, 1);
+        }
+
+        body {
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.12), transparent 40%),
+                radial-gradient(circle at 85% 0%, rgba(16, 185, 129, 0.08), transparent 35%);
+        }
+
+        /* Mostrar el contenedor principal por defecto para evitar dependencia total de JS */
+        .page-shell {
+            opacity: 1;
+            transform: none;
+            transition: opacity .55s var(--ease-smooth), transform .55s var(--ease-smooth);
+        }
+
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(20px) scale(.985);
+            transition:
+                opacity .65s var(--ease-smooth),
+                transform .65s var(--ease-smooth);
+            transition-delay: var(--anim-delay, 0ms);
+            will-change: opacity, transform;
+        }
+
+        [data-animate].is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .page-shell,
+            [data-animate] {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Nav show/hide on scroll */
+        #site-nav {
+            will-change: transform, background-color;
+            transition: transform .28s var(--ease-smooth), background-color .28s var(--ease-smooth), box-shadow .28s var(--ease-smooth);
+        }
+
+        body.nav-hidden #site-nav {
+            transform: translateY(-110%);
+            box-shadow: none;
+        }
+
+        body.nav-visible #site-nav {
+            transform: translateY(0);
+            box-shadow: 0 6px 24px rgba(2,6,23,0.5);
+            background-color: rgba(2,6,23,0.9);
+        }
+
+        /* Elements that react to scroll direction */
+        .scroll-sensitive {
+            transition: transform .35s var(--ease-smooth), opacity .35s var(--ease-smooth);
+        }
+
+        body.scroll-down .scroll-sensitive {
+            transform: translateY(-6px) scale(.995);
+            opacity: .98;
+        }
+
+        body.scroll-up .scroll-sensitive {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<!-- Fondo oscuro coherente con los manuales -->
+<body class="bg-[#020617] text-slate-300 antialiased min-h-screen">
+
+    {% include 'includes/nav.html' %}
+
+    <main class="page-shell">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer opcional para cerrar el diseño -->
+    <footer class="border-t border-slate-800 py-10 text-center text-sm text-slate-500">
+        <p>&copy; 2026 CloudFree - Recursos para apasionados de la informática.</p>
+    </footer>
+
+    <script>
+        (function () {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (prefersReduced) {
+                document.querySelectorAll('[data-animate]').forEach((el) => {
+                    el.classList.add('is-visible');
+                });
+            } else {
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.12,
+                    rootMargin: '0px 0px -8% 0px'
+                });
+
+                document.querySelectorAll('[data-animate]').forEach((el) => {
+                    observer.observe(el);
+                });
+
+                // Fallback: force visible after short timeout
+                setTimeout(() => {
+                    document.querySelectorAll('[data-animate]').forEach((el) => {
+                        if (!el.classList.contains('is-visible')) {
+                            el.classList.add('is-visible');
+                        }
+                    });
+                }, 350);
+            }
+
+            // Scroll direction detection: show/hide nav and add body classes
+            (function(){
+                let lastY = window.scrollY || 0;
+                let ticking = false;
+                const delta = 8;
+
+                function onScroll() {
+                    const y = window.scrollY || 0;
+                    const body = document.body;
+                    if (Math.abs(y - lastY) < delta) { return; }
+                    if (y > lastY && y > 60) {
+                        // scrolling down
+                        body.classList.remove('scroll-up');
+                        body.classList.add('scroll-down');
+                        body.classList.add('nav-hidden');
+                        body.classList.remove('nav-visible');
+                    } else {
+                        // scrolling up
+                        body.classList.remove('scroll-down');
+                        body.classList.add('scroll-up');
+                        body.classList.remove('nav-hidden');
+                        body.classList.add('nav-visible');
+                    }
+                    lastY = y;
+                    ticking = false;
+                }
+
+                window.addEventListener('scroll', function() {
+                    if (!ticking) {
+                        window.requestAnimationFrame(onScroll);
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                // initialize nav-visible when at top
+                if ((window.scrollY || 0) <= 60) {
+                    document.body.classList.add('nav-visible');
+                }
+            })();
+        })();
+    </script>
+    {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

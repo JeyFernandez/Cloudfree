@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio | {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-6 py-12" data-animate style="--anim-delay: 40ms;">
+    <!-- Hero Section -->
+    <header class="mb-16 text-center md:text-left" data-animate style="--anim-delay: 120ms;">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-4">
+            Bienvenido a <span class="text-blue-500">CloudFree</span>
+        </h1>
+        <p class="text-lg text-slate-400 max-w-2xl">
+            Tu centro de recursos informáticos. Explora manuales detallados, noticias de tecnología y herramientas de software en un solo lugar.
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12" data-animate style="--anim-delay: 160ms;">
+        
+        <!-- Columna Izquierda: Documentación Reciente (5 Cards) -->
+        <div class="lg:col-span-2 space-y-6" data-animate style="--anim-delay: 220ms;">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-history text-blue-500"></i> Manuales Recientes
+                </h2>
+                <a href="/manuales/" class="text-sm text-blue-400 hover:underline">Ver todos</a>
+            </div>
+
+            <div class="grid gap-4">
+                {% for manual in manuales_recientes|slice:":5" %}
+                <a href="{% url 'manual_detail' manual.slug %}" class="group bg-slate-900/50 border border-slate-800 p-5 rounded-2xl flex items-center justify-between hover:border-blue-500/50 transition-all" data-animate style="--anim-delay: {{ forloop.counter0|add:1 }}00ms;">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="{{ manual.Category.ico|default:'fas fa-file-code' }}"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold group-hover:text-blue-400 transition-colors">{{ manual.title }}</h3>
+                            <p class="text-xs text-slate-500 mt-1">{{ manual.Category.name }} • {{ manual.created_at|date:"d M" }}</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-700 group-hover:text-blue-400 transition-colors"></i>
+                </a>
+                {% empty %}
+                <p class="text-slate-600 italic">No hay manuales publicados aún.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Otros Módulos y Accesos Rápidos -->
+        <div class="space-y-8" data-animate style="--anim-delay: 280ms;">
+            <!-- Sección de Módulos Dinámicos -->
+            <div>
+                <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <i class="fas fa-cubes text-purple-500"></i> Módulos del Proyecto
+                </h2>
+                <div class="grid gap-3">
+                    {% for mod in modules %}
+                    <a href="{{ mod.url }}" class="flex items-center gap-3 p-4 bg-[#0f172a] border border-slate-800 rounded-xl hover:bg-slate-800 transition-colors group" data-animate style="--anim-delay: {{ forloop.counter }}20ms;">
+                        <span class="w-2 h-2 rounded-full bg-slate-700 group-hover:bg-blue-500 transition-colors"></span>
+                        <span class="text-slate-300 font-medium group-hover:text-white">{{ mod.name }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Sección de Acceso a Recursos (Placeholder para tu próximo mod) -->
+            <div class="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30 p-6 rounded-3xl relative overflow-hidden" data-animate style="--anim-delay: 360ms;">
+                <div class="relative z-10">
+                    <h3 class="text-white font-bold mb-2">Zona de Descargas</h3>
+                    <p class="text-sm text-slate-300 mb-4">Accede a software, ISOs y herramientas esenciales.</p>
+                    <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-2 px-4 rounded-lg transition-colors">
+                        Explorar Recursos
+                    </button>
+                </div>
+                <i class="fas fa-download absolute -bottom-4 -right-4 text-7xl text-white/5"></i>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

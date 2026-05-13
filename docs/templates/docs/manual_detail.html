@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}{{ manual.title }} | CloudFree{% endblock %}
+
+{% block extra_head %}
+<style>
+    pre {
+        background-color: #0f172a !important;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        border: 1px solid #1e293b;
+        overflow-x: auto;
+        position: relative;
+    }
+
+    code {
+        font-family: 'Fira Code', monospace;
+        color: #38bdf8;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="flex">
+    <aside id="desktop-index" class="fixed top-16 bottom-0 left-0 z-20 hidden w-[300px] overflow-y-auto border-r border-slate-800 px-6 py-8 md:block" data-animate style="--anim-delay: 80ms;">
+        <h5 class="text-slate-200 font-semibold mb-4 text-sm uppercase tracking-wider">Manuales de {{ manual.Category.name }}</h5>
+        <nav class="space-y-3">
+            {% for m in related_manuales %}
+                <a href="{% url 'manual_detail' m.slug %}" class="flex items-center gap-3 px-3 py-3 text-sm font-medium text-slate-300 hover:text-white bg-slate-900/0 rounded-lg border border-slate-800 hover:bg-blue-500/5 transition-colors {% if m.id == manual.id %}bg-blue-500/10 text-blue-300{% endif %}">
+                    <i class="fas fa-chevron-right text-[10px]"></i>
+                    <span class="ml-2">{{ m.title }}</span>
+                </a>
+            {% empty %}
+                <p class="text-slate-500 italic">No hay otros manuales en esta categoría.</p>
+            {% endfor %}
+        </nav>
+    </aside>
+
+    <!-- Mobile index overlay (hidden on md+) -->
+    <div id="mobile-index-overlay" class="fixed inset-0 z-40 hidden md:hidden">
+        <div class="absolute inset-0 bg-black/60" id="mobile-index-backdrop"></div>
+        <div class="absolute left-0 top-0 bottom-0 w-3/4 max-w-xs bg-[#071227] border-r border-slate-800 p-6 overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h5 class="text-slate-200 font-semibold text-sm uppercase">Manuales</h5>
+                <button id="mobile-index-close" class="text-slate-300 p-1 rounded hover:bg-slate-800/30">Cerrar</button>
+            </div>
+            <nav class="space-y-3">
+                {% for m in related_manuales %}
+                    <a href="{% url 'manual_detail' m.slug %}" class="block px-3 py-3 rounded text-slate-200 hover:bg-slate-800/40 {% if m.id == manual.id %}bg-blue-500/10 text-blue-300{% endif %}">{{ m.title }}</a>
+                {% empty %}
+                    <p class="text-slate-500 italic">No hay manuales.</p>
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+
+    <section class="flex-1 md:ml-[300px] px-6 py-12 lg:px-16" data-animate style="--anim-delay: 140ms;">
+        <div class="max-w-4xl" data-animate style="--anim-delay: 200ms;">
+            <nav class="flex items-center gap-2 text-sm mb-6 scroll-sensitive" data-animate style="--anim-delay: 250ms;">
+                <a href="/" class="hover:text-white">Inicio</a>
+                <i class="fas fa-chevron-right text-[10px] text-slate-600"></i>
+                <span class="hover:text-white cursor-default">Documentacion</span>
+                <i class="fas fa-chevron-right text-[10px] text-slate-600"></i>
+                <span class="text-blue-400">{{ manual.Category.name }}</span>
+            </nav>
+
+            <h1 class="text-4xl font-extrabold text-white tracking-tight mb-4 scroll-sensitive" data-animate style="--anim-delay: 280ms;">
+                {{ manual.title }}
+            </h1>
+
+            <p class="text-slate-500 text-sm mb-10 pb-6 border-b border-slate-800" data-animate style="--anim-delay: 320ms;">
+                <i class="far fa-calendar-alt mr-2"></i> Ultima actualizacion: {{ manual.updated_at|date:"d M, Y" }}
+            </p>
+
+            <div class="prose prose-invert prose-blue max-w-none prose-headings:text-white prose-a:text-blue-400 prose-strong:text-slate-100" data-animate style="--anim-delay: 380ms;">
+                {{ manual.content|safe }}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.querySelectorAll('pre').forEach((block) => {
+        const code = block.querySelector('code');
+        if (!code) {
+            return;
+        }
+
+        const button = document.createElement('button');
+        button.innerHTML = '<i class="far fa-copy"></i><span>Copiar</span>';
+        button.className = 'absolute top-3 right-3 z-10 flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-xs font-medium text-slate-300 transition-all duration-200 hover:border-blue-500 hover:bg-blue-500/10 hover:text-white';
+
+        block.appendChild(button);
+
+        button.addEventListener('click', async () => {
+            const text = code.innerText;
+            await navigator.clipboard.writeText(text);
+
+            button.innerHTML = '<i class="fas fa-check"></i><span>Copiado</span>';
+            button.classList.add('border-green-500');
+
+            setTimeout(() => {
+                button.innerHTML = '<i class="far fa-copy"></i><span>Copiar</span>';
+                button.classList.remove('border-green-500');
+            }, 2000);
+        });
+    });
+</script>
+<script>
+    // Mobile index toggle
+    (function(){
+        const openBtn = document.createElement('button');
+        openBtn.innerText = 'Índice';
+        openBtn.id = 'mobile-index-open';
+        openBtn.className = 'md:hidden fixed bottom-6 right-4 z-50 bg-blue-600 text-white px-4 py-3 rounded-full shadow-lg';
+        document.body.appendChild(openBtn);
+
+        const overlay = document.getElementById('mobile-index-overlay');
+        const closeBtn = document.getElementById('mobile-index-close');
+        const backdrop = document.getElementById('mobile-index-backdrop');
+
+        function open() { overlay.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); }
+        function close(){ overlay.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); }
+
+        openBtn.addEventListener('click', open);
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        if (backdrop) backdrop.addEventListener('click', close);
+    })();
+</script>
+{% endblock %}
