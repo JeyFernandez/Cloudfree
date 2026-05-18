@@ -24,6 +24,9 @@ urlpatterns = [
     path('', include('docs.urls')),
     path('', include('news.urls')),
     path('', include('resources.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')), # Incluye login/logout automáticamente
+
 ]
 
 # Serve media files in development

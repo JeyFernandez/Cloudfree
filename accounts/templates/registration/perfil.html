@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Tu perfil | CloudFree{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-16">
+    <!-- Header -->
+    <header class="mb-6 sm:mb-10" data-animate style="--anim-delay: 80ms;">
+        <p class="text-xs sm:text-sm uppercase tracking-[0.28em] text-blue-400 mb-2 sm:mb-3">Perfil de usuario</p>
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-white mb-2 sm:mb-4">{{ profile_user.username }}</h1>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">Gestiona tu información y configuración de cuenta dentro de CloudFree.</p>
+    </header>
+
+    <!-- Mensajes -->
+    {% if messages %}
+        <div class="mb-4 sm:mb-6 space-y-2 sm:space-y-3">
+            {% for message in messages %}
+                <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl bg-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-900/20 border border-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-500/20">
+                    <p class="text-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-300 text-xs sm:text-sm">{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Grid Principal -->
+    <div class="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-3">
+        <!-- Información del Perfil -->
+        <section class="lg:col-span-2 bg-slate-900/40 border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8" data-animate style="--anim-delay: 120ms;">
+            <div class="flex flex-col sm:flex-row items-start justify-between gap-4 mb-6 sm:mb-8">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">Información de Cuenta</h2>
+                    <p class="text-slate-400 text-sm sm:text-base">Usuario verificado y autenticado</p>
+                </div>
+                <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-600/20 border border-blue-500/20 flex items-center justify-center text-blue-300">
+                    <i class="fas fa-shield-alt text-lg sm:text-xl"></i>
+                </div>
+            </div>
+
+            <!-- Información en Grid -->
+            <div class="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 mb-6 sm:mb-8">
+                <div class="rounded-lg sm:rounded-2xl bg-slate-950/60 border border-slate-800 p-4 sm:p-5">
+                    <p class="text-xs uppercase tracking-widest text-slate-500 mb-1.5 sm:mb-2">Nombre de usuario</p>
+                    <p class="text-white font-medium text-sm sm:text-lg">{{ profile_user.username }}</p>
+                </div>
+                <div class="rounded-lg sm:rounded-2xl bg-slate-950/60 border border-slate-800 p-4 sm:p-5">
+                    <p class="text-xs uppercase tracking-widest text-slate-500 mb-1.5 sm:mb-2">Correo</p>
+                    <p class="text-white font-medium text-sm sm:text-lg break-all">{% if profile_user.email %}{{ profile_user.email }}{% else %}<span class="text-slate-500">No registrado</span>{% endif %}</p>
+                </div>
+                <div class="rounded-lg sm:rounded-2xl bg-slate-950/60 border border-slate-800 p-4 sm:p-5">
+                    <p class="text-xs uppercase tracking-widest text-slate-500 mb-1.5 sm:mb-2">Tipo de usuario</p>
+                    <p class="text-white font-medium text-sm sm:text-lg">
+                        {% if profile_user.is_superuser %}
+                            <span class="bg-purple-900/30 text-purple-300 px-2.5 sm:px-3 py-1 rounded-lg text-xs sm:text-sm inline-block">Administrador</span>
+                        {% elif profile_user.is_staff %}
+                            <span class="bg-amber-900/30 text-amber-300 px-2.5 sm:px-3 py-1 rounded-lg text-xs sm:text-sm inline-block">Personal</span>
+                        {% else %}
+                            <span class="bg-blue-900/30 text-blue-300 px-2.5 sm:px-3 py-1 rounded-lg text-xs sm:text-sm inline-block">Usuario</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="rounded-lg sm:rounded-2xl bg-slate-950/60 border border-slate-800 p-4 sm:p-5">
+                    <p class="text-xs uppercase tracking-widest text-slate-500 mb-1.5 sm:mb-2">Último acceso</p>
+                    <p class="text-white font-medium text-sm sm:text-lg">{% if profile_user.last_login %}{{ profile_user.last_login|date:"d M Y, H:i" }}{% else %}<span class="text-slate-500">Primera vez</span>{% endif %}</p>
+                </div>
+            </div>
+
+            <!-- Información Personal -->
+            {% if profile %}
+                <hr class="border-slate-800 my-6 sm:my-8">
+                <div class="mb-6 sm:mb-8">
+                    <h3 class="text-lg sm:text-xl font-bold text-white mb-4">Perfil Personal</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-widest text-slate-500 mb-1.5 sm:mb-2">Nombre completo</p>
+                            <p class="text-white font-medium text-sm sm:text-base">{% if profile.nombre_completo %}{{ profile.nombre_completo }}{% else %}<span class="text-slate-500">No especificado</span>{% endif %}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-widest text-slate-500 mb-1.5 sm:mb-2">Bio/Descripción</p>
+                            <p class="text-white leading-relaxed text-sm sm:text-base">{% if profile.bio %}{{ profile.bio|linebreaks }}{% else %}<span class="text-slate-500 italic">Sin descripción</span>{% endif %}</p>
+                        </div>
+                        <div class="text-xs text-slate-500">
+                            Perfil actualizado: {{ profile.fecha_actualizacion|date:"d M Y, H:i" }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+
+        <!-- Panel de Acciones -->
+        <aside class="bg-slate-900/40 border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8" data-animate style="--anim-delay: 160ms;">
+            <h3 class="text-base sm:text-lg font-semibold text-white mb-4 sm:mb-6">Acciones</h3>
+            
+            <!-- Botones de Acción -->
+            <div class="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <a href="{% url 'accounts:editar_perfil' %}" class="block rounded-lg sm:rounded-xl bg-blue-600/20 border border-blue-500/40 px-3 sm:px-4 py-2.5 sm:py-3 text-blue-300 hover:bg-blue-600/30 transition font-medium text-sm sm:text-base text-center">
+                    <i class="fas fa-edit mr-1 sm:mr-2"></i>Editar perfil
+                </a>
+                <a href="{% url 'accounts:cambiar_contraseña' %}" class="block rounded-lg sm:rounded-xl bg-slate-950/60 border border-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 text-slate-200 hover:border-blue-500/40 hover:text-white transition font-medium text-sm sm:text-base text-center">
+                    <i class="fas fa-lock mr-1 sm:mr-2"></i>Cambiar contraseña
+                </a>
+                <a href="/manuales/" class="block rounded-lg sm:rounded-xl bg-slate-950/60 border border-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 text-slate-200 hover:border-blue-500/40 hover:text-white transition font-medium text-sm sm:text-base text-center">
+                    <i class="fas fa-book mr-1 sm:mr-2"></i>Documentación
+                </a>
+                <a href="/recursos/" class="block rounded-lg sm:rounded-xl bg-slate-950/60 border border-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 text-slate-200 hover:border-blue-500/40 hover:text-white transition font-medium text-sm sm:text-base text-center">
+                    <i class="fas fa-cube mr-1 sm:mr-2"></i>Recursos
+                </a>
+                <a href="/noticias/" class="block rounded-lg sm:rounded-xl bg-slate-950/60 border border-slate-800 px-3 sm:px-4 py-2.5 sm:py-3 text-slate-200 hover:border-blue-500/40 hover:text-white transition font-medium text-sm sm:text-base text-center">
+                    <i class="fas fa-newspaper mr-1 sm:mr-2"></i>Noticias
+                </a>
+            </div>
+
+            <!-- Cerrar Sesión -->
+            <hr class="border-slate-800 my-4 sm:my-6">
+            <a href="{% url 'accounts:logout' %}" class="block w-full rounded-lg sm:rounded-xl bg-red-600/20 border border-red-500/40 px-3 sm:px-4 py-2.5 sm:py-3 text-red-300 hover:bg-red-600/30 transition font-medium text-sm sm:text-base text-center">
+                <i class="fas fa-sign-out-alt mr-1 sm:mr-2"></i>Cerrar sesión
+            </a>
+        </aside>
+    </div>
+
+    <!-- Información adicional -->
+    <section class="mt-6 sm:mt-12 bg-slate-900/20 border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8" data-animate style="--anim-delay: 200ms;">
+        <h3 class="text-base sm:text-lg font-semibold text-white mb-4">Información de Seguridad</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div class="p-4 rounded-lg sm:rounded-xl bg-slate-950/40 border border-slate-800">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                    <span class="text-white font-medium text-sm sm:text-base">Cuenta confirmada</span>
+                </div>
+                <p class="text-slate-400 text-xs sm:text-sm">Tu email ha sido verificado</p>
+            </div>
+            <div class="p-4 rounded-lg sm:rounded-xl bg-slate-950/40 border border-slate-800">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
+                    <span class="text-white font-medium text-sm sm:text-base">Sesión activa</span>
+                </div>
+                <p class="text-slate-400 text-xs sm:text-sm">Conectado y protegido</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

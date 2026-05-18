@@ -33,15 +33,23 @@
             <!-- Enlaces -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 {% if resource.official_site %}
-                <a href="{{ resource.official_site }}" target="_blank" rel="noopener" class="inline-block px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition">
-                    Sitio Oficial
+                <a href="{{ resource.official_site }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition">
+                    <i class="fas fa-external-link-alt"></i>
+                    Sitio oficial
                 </a>
                 {% endif %}
-                
-                {% if resource.others_repositories %}
-                <div class="px-6 py-3 bg-slate-800 border border-slate-700 rounded-lg">
-                    <h3 class="text-white font-bold mb-2">Repositorios</h3>
-                    <p class="text-slate-400 whitespace-pre-wrap text-sm">{{ resource.others_repositories }}</p>
+
+                {% if resource.get_download_links %}
+                <div class="md:col-span-2 px-6 py-5 bg-slate-800 border border-slate-700 rounded-lg">
+                    <h3 class="text-white font-bold mb-3">Enlaces de descarga</h3>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        {% for link in resource.get_download_links %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener" class="flex items-center justify-between gap-3 rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 text-slate-200 hover:border-blue-500/40 hover:text-white transition">
+                            <span class="min-w-0 truncate">{{ link.label }}</span>
+                            <i class="fas fa-cloud-download-alt text-blue-400 flex-shrink-0"></i>
+                        </a>
+                        {% endfor %}
+                    </div>
                 </div>
                 {% endif %}
             </div>

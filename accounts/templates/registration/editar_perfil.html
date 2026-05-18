@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Editar perfil | CloudFree{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-2xl mx-auto px-3 sm:px-6 py-8 sm:py-16">
+    <!-- Header -->
+    <header class="mb-6 sm:mb-10" data-animate style="--anim-delay: 80ms;">
+        <p class="text-xs sm:text-sm uppercase tracking-[0.28em] text-blue-400 mb-2 sm:mb-3">Configuración</p>
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-white mb-2 sm:mb-4">Editar perfil</h1>
+        <p class="text-slate-400 text-sm sm:text-base">Actualiza tu información personal</p>
+    </header>
+
+    <!-- Mensajes -->
+    {% if messages %}
+        <div class="mb-4 sm:mb-6 space-y-2 sm:space-y-3">
+            {% for message in messages %}
+                <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl bg-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-900/20 border border-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-500/20">
+                    <p class="text-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-300 text-xs sm:text-sm">{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Formulario -->
+    <div class="bg-slate-900/40 border border-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8" data-animate style="--anim-delay: 120ms;">
+        <form method="post" class="space-y-4 sm:space-y-6">
+            {% csrf_token %}
+
+            <!-- Nombre Completo -->
+            <div>
+                <label for="{{ form.nombre_completo.id_for_label }}" class="block text-xs font-mono uppercase tracking-widest text-blue-400 mb-1.5 sm:mb-2">
+                    Nombre completo
+                </label>
+                {{ form.nombre_completo }}
+                {% if form.nombre_completo.errors %}
+                    <div class="mt-1.5 sm:mt-2 p-2 sm:p-3 bg-red-900/20 border border-red-500/20 rounded-lg">
+                        <ul class="list-none text-red-400 text-xs sm:text-sm">
+                            {% for error in form.nombre_completo.errors %}
+                                <li>• {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <p class="text-xs text-slate-500 mt-1">Tu nombre completo como te gustaría que aparezca</p>
+            </div>
+
+            <!-- Bio -->
+            <div>
+                <label for="{{ form.bio.id_for_label }}" class="block text-xs font-mono uppercase tracking-widest text-blue-400 mb-1.5 sm:mb-2">
+                    Sobre ti (Bio)
+                </label>
+                {{ form.bio }}
+                {% if form.bio.errors %}
+                    <div class="mt-1.5 sm:mt-2 p-2 sm:p-3 bg-red-900/20 border border-red-500/20 rounded-lg">
+                        <ul class="list-none text-red-400 text-xs sm:text-sm">
+                            {% for error in form.bio.errors %}
+                                <li>• {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <p class="text-xs text-slate-500 mt-1">Cuéntanos sobre ti (máximo 500 caracteres)</p>
+            </div>
+
+            <!-- Errores generales -->
+            {% if form.non_field_errors %}
+                <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl bg-red-900/20 border border-red-500/20">
+                    <ul class="list-none text-red-400 text-xs sm:text-sm space-y-1">
+                        {% for error in form.non_field_errors %}
+                            <li>• {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <!-- Botones de Acción -->
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3 sm:pt-4">
+                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 sm:py-3 rounded-lg sm:rounded-xl transition-all shadow-lg shadow-blue-600/20 text-sm sm:text-base">
+                    Guardar cambios
+                </button>
+                <a href="{% url 'perfil' %}" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 sm:py-3 rounded-lg sm:rounded-xl transition-all text-center text-sm sm:text-base">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Información útil -->
+    <div class="mt-6 sm:mt-8 bg-blue-900/20 border border-blue-500/20 rounded-2xl sm:rounded-3xl p-6 sm:p-6">
+        <div class="flex gap-3 sm:gap-4">
+            <div class="flex-shrink-0 text-blue-400 mt-0.5">
+                <i class="fas fa-info-circle text-base sm:text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-white font-semibold mb-1 text-sm sm:text-base">Información de tu perfil</h3>
+                <p class="text-blue-200 text-xs sm:text-sm">Los cambios se guardarán inmediatamente. La información que actualices será visible en tu perfil.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    <!-- Header -->
+    <header class="mb-10" data-animate style="--anim-delay: 80ms;">
+        <p class="text-sm uppercase tracking-[0.28em] text-blue-400 mb-3">Configuración</p>
+        <h1 class="text-4xl font-extrabold text-white mb-4">Editar perfil</h1>
+        <p class="text-slate-400">Actualiza tu información personal</p>
+    </header>
+
+    <!-- Mensajes -->
+    {% if messages %}
+        <div class="mb-6 space-y-3">
+            {% for message in messages %}
+                <div class="p-4 rounded-xl bg-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-900/20 border border-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-500/20">
+                    <p class="text-{% if message.tags %}{{ message.tags }}{% else %}blue{% endif %}-300 text-sm">{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Formulario -->
+    <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-8" data-animate style="--anim-delay: 120ms;">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Nombre Completo -->
+            <div>
+                <label for="{{ form.nombre_completo.id_for_label }}" class="block text-xs font-mono uppercase tracking-widest text-blue-400 mb-2">
+                    Nombre completo
+                </label>
+                {{ form.nombre_completo }}
+                {% if form.nombre_completo.errors %}
+                    <div class="mt-2 p-3 bg-red-900/20 border border-red-500/20 rounded-lg">
+                        <ul class="list-none text-red-400 text-sm">
+                            {% for error in form.nombre_completo.errors %}
+                                <li>• {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <p class="text-xs text-slate-500 mt-1">Tu nombre completo como te gustaría que aparezca</p>
+            </div>
+
+            <!-- Bio -->
+            <div>
+                <label for="{{ form.bio.id_for_label }}" class="block text-xs font-mono uppercase tracking-widest text-blue-400 mb-2">
+                    Sobre ti (Bio)
+                </label>
+                {{ form.bio }}
+                {% if form.bio.errors %}
+                    <div class="mt-2 p-3 bg-red-900/20 border border-red-500/20 rounded-lg">
+                        <ul class="list-none text-red-400 text-sm">
+                            {% for error in form.bio.errors %}
+                                <li>• {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <p class="text-xs text-slate-500 mt-1">Cuéntanos sobre ti (máximo 500 caracteres)</p>
+            </div>
+
+            <!-- Errores generales -->
+            {% if form.non_field_errors %}
+                <div class="p-4 rounded-xl bg-red-900/20 border border-red-500/20">
+                    <ul class="list-none text-red-400 text-sm space-y-1">
+                        {% for error in form.non_field_errors %}
+                            <li>• {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <!-- Botones de Acción -->
+            <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20">
+                    Guardar cambios
+                </button>
+                <a href="{% url 'perfil' %}" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all text-center">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Información útil -->
+    <div class="mt-8 bg-blue-900/20 border border-blue-500/20 rounded-3xl p-6">
+        <div class="flex gap-4">
+            <div class="flex-shrink-0">
+                <i class="fas fa-info-circle text-blue-400 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-white font-semibold mb-2">Información de tu perfil</h3>
+                <p class="text-blue-200 text-sm">Los cambios se guardarán inmediatamente. La información que actualices será visible en tu perfil.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

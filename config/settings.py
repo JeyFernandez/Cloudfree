@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'resources',
     'news',
     'docs',
+    'accounts',
 ]
 # Cloudinary configuration is optional. If Cloudinary credentials are provided
 # via environment variables the app will enable cloudinary and cloudinary_storage
@@ -53,7 +54,9 @@ CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME') or os.environ.ge
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
 CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
 CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
-
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 if CLOUDINARY_API_KEY and (CLOUDINARY_CLOUD_NAME or CLOUDINARY_URL):
     INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
     CLOUDINARY_STORAGE = {
