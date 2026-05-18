@@ -21,12 +21,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w6ic)wnp#w=e051*2qe9x0=_l1i8+@80!xu5evge@x#k#%3osw'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-w6ic)wnp#w=e051*2qe9x0=_l1i8+@80!xu5evge@x#k#%3osw')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'ALLOWED_HOSTS',
+        'localhost,127.0.0.1,.pythonanywhere.com'
+    ).split(',')
+    if host.strip()
+]
 
 
 # Application definition
@@ -57,6 +64,7 @@ CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
 if CLOUDINARY_API_KEY and (CLOUDINARY_CLOUD_NAME or CLOUDINARY_URL):
     INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
     CLOUDINARY_STORAGE = {
@@ -68,8 +76,9 @@ if CLOUDINARY_API_KEY and (CLOUDINARY_CLOUD_NAME or CLOUDINARY_URL):
 else:
     # Development fallback: store uploaded files locally under MEDIA_ROOT
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -146,4 +155,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        origin.strip()
+        for origin in os.environ.get(
+            'CSRF_TRUSTED_ORIGINS',
+            'https://*.pythonanywhere.com'
+        ).split(',')
+        if origin.strip()
+    ]
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
