@@ -50,7 +50,7 @@ def editar_perfil_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Tu perfil ha sido actualizado exitosamente.')
-            return redirect('perfil')
+            return redirect('accounts:perfil')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -81,7 +81,7 @@ def cambiar_contraseña_view(request):
                 user.set_password(contraseña_nueva)
                 user.save()
                 messages.success(request, 'Tu contraseña ha sido cambiada exitosamente.')
-                return redirect('perfil')
+                return redirect('accounts:perfil')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
