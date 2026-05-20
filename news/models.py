@@ -7,7 +7,12 @@ class News(models.Model):
     slug = models.SlugField(unique=True)
     excerpt = models.CharField(max_length=255, blank=True)
     content = models.TextField()
-    image = models.ImageField(upload_to='news/', blank=True, null=True)
+    image = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name='Imagen (URL)',
+        help_text='Pega aquí un enlace directo a la imagen alojada externamente.'
+    )
     author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

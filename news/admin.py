@@ -8,3 +8,15 @@ class NewsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title', 'content', 'excerpt')
     list_filter = ('published', 'created_at')
+    fieldsets = (
+        ('Contenido principal', {
+            'fields': ('title', 'slug', 'excerpt', 'content')
+        }),
+        ('Imagen externa', {
+            'fields': ('image',),
+            'description': 'Usa una URL directa a una imagen hospedada externamente.'
+        }),
+        ('Publicación', {
+            'fields': ('author', 'published')
+        }),
+    )

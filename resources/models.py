@@ -14,7 +14,12 @@ class Category(models.Model):
 class Resource(models.Model):
   name = models.CharField(max_length=200, verbose_name='Nombre del recurso')
   slug= models.SlugField(unique=True)
-  image = models.ImageField(upload_to='resources/', blank=True, null=True)
+  image = models.URLField(
+    blank=True,
+    null=True,
+    verbose_name='Imagen (URL)',
+    help_text='Pega un enlace directo a la imagen alojada fuera del proyecto.'
+  )
 
   category = models.ForeignKey(
     Category,

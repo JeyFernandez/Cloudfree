@@ -31,7 +31,7 @@
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center text-blue-400 overflow-hidden">
                             {% if noticia.image %}
-                            <img src="{{ noticia.image.url }}" alt="{{ noticia.title }}" class="w-full h-full object-cover">
+                            <img src="{{ noticia.image }}" alt="{{ noticia.title }}" class="w-full h-full object-cover">
                             {% else %}
                             <i class="fas fa-newspaper"></i>
                             {% endif %}
@@ -87,7 +87,7 @@
                     <a href="{% url 'resources:resource_detail' res.slug %}" class="flex items-center gap-3 p-4 bg-[#0f172a] border border-slate-800 rounded-xl hover:bg-slate-800 transition-colors group" data-animate style="--anim-delay: {{ forloop.counter }}20ms;">
                         <div class="w-10 h-10 bg-slate-800 rounded flex items-center justify-center overflow-hidden">
                             {% if res.image %}
-                            <img src="{{ res.image.url }}" alt="{{ res.name }}" class="w-full h-full object-cover">
+                            <img src="{{ res.image }}" alt="{{ res.name }}" class="w-full h-full object-cover">
                             {% else %}
                             <i class="fas fa-box text-slate-400"></i>
                             {% endif %}

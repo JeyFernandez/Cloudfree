@@ -49,7 +49,7 @@
                         <a href="{% url 'resources:resource_detail' resource.slug %}" class="group bg-slate-900/40 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/50 transition-all duration-300" data-animate style="--anim-delay: {{ forloop.counter0|add:1 }}00ms;">
                             {% if resource.image %}
                             <div class="mb-4 rounded-lg overflow-hidden aspect-video bg-slate-800">
-                                <img src="{{ resource.image.url }}" alt="{{ resource.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <img src="{{ resource.image }}" alt="{{ resource.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             </div>
                             {% endif %}
                             <h3 class="text-white font-bold mb-2 group-hover:text-blue-400 transition-colors">

@@ -32,12 +32,7 @@ def news_feed_json(request):
     items = News.objects.filter(published=True).order_by('-created_at')[:20]
     data = []
     for it in items:
-        image_url = None
-        try:
-            if it.image:
-                image_url = request.build_absolute_uri(it.image.url)
-        except Exception:
-            image_url = None
+        image_url = it.image or None
 
         author = None
         if it.author:

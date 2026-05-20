@@ -6,12 +6,11 @@ django.setup()
 
 from resources.models import Resource
 
-# Ver los recursos y sus imágenes
+# Ver los recursos y sus enlaces de imagen
 for resource in Resource.objects.all():
     print(f'Recurso: {resource.name}')
     if resource.image:
-        print(f'  Image: {resource.image.name}')
-        print(f'  Image URL: {resource.image.url}')
+        print(f'  Image URL: {resource.image}')
     else:
-        print(f'  Sin imagen')
+        print('  Sin imagen')
     print()
